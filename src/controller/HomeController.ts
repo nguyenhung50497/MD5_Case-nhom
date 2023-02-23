@@ -3,16 +3,19 @@ import categoryService from "../service/CategoryService";
 import {Request, Response} from "express";
 import homeService from "../service/HomeService";
 import orderService from "../service/OrderService";
+import imageService from "../service/ImageService";
 
 class homeController {
     private homeService;
     private categoryService;
     private orderService;
+    private imageService;
 
     constructor() {
         this.homeService = homeService;
         this.categoryService = categoryService;
         this.orderService = orderService;
+        this.imageService = imageService;
     }
 
     getAllHome = async (req: Request, res: Response) => {
@@ -28,6 +31,42 @@ class homeController {
                 data = [homes, categories];
             }
             res.status(200).json(homes);
+        } catch (e) {
+            res.status(500).json(e.message);
+        }
+    }
+
+    getImages = async (req: Request, res: Response) => {
+        try {
+            let orders;
+            let data;
+            let images = await imageService.getAllImage();
+            let categories = await categoryService.getAllCategory();
+            if (req["decoded"]) {
+                // orders = await orderService.getMyOrder(req["decoded"].idUser);
+                // data = [homes, categories, orders];
+            } else {
+                // data = [homes, categories];
+            }
+            res.status(200).json(images);
+        } catch (e) {
+            res.status(500).json(e.message);
+        }
+    }
+
+    getImagesByIdHome = async (req: Request, res: Response) => {
+        try {
+            let orders;
+            let data;
+            let images = await imageService.findImageByIdHome(req.params.idHome);
+            let categories = await categoryService.getAllCategory();
+            if (req["decoded"]) {
+                // orders = await orderService.getMyOrder(req["decoded"].idUser);
+                // data = [homes, categories, orders];
+            } else {
+                // data = [homes, categories];
+            }
+            res.status(200).json(images);
         } catch (e) {
             res.status(500).json(e.message);
         }

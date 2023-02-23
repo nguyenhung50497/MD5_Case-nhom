@@ -1,5 +1,6 @@
 import { text } from "express";
-import {Column, Entity, PrimaryGeneratedColumn} from "typeorm";
+import {Column, Entity, OneToMany, PrimaryGeneratedColumn} from "typeorm";
+import { Image } from "./image";
 
 
 @Entity()

@@ -3,7 +3,9 @@ import homeController from "../controller/HomeController";
 import {auth} from "../middleware/auth";
 import {userAuth} from "../middleware/user";
 export const homeRouter = Router()
-homeRouter.get('',homeController.getAllHome);
+homeRouter.get('',homeController.index);
+homeRouter.get('/images',homeController.getImages);
+homeRouter.get('/images/:idHome',homeController.getImagesByIdHome);
 // homeRouter.get('/find-home-by-name',homeController.findHome);
 homeRouter.use(auth)
 homeRouter.get('/users',homeController.getAllHome);
