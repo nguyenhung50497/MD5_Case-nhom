@@ -9,7 +9,7 @@ export class OrderDetail {
     idHome: number;
     @Column()
     idOrder: number;
-    @Column({type: "date",})
+    @Column()
     timeRent: string;
 
 }

@@ -19,31 +19,31 @@ class OrderController{
     }
     createOrder = async (req: Request, res: Response) => {
         try {
-            let orders = await orderService.save(req.body);
-            res.status(200).json(orders)
+            let order = await orderService.save(req.body);
+            res.status(200).json(order)
         } catch (e) {
             res.status(500).json(e.message)
         }
 
     }
-    // findByIdorder = async (req: Request, res: Response) => {
-    //     try {
-    //         let idorder = req.params.idAlbum
-    //         let orders = await orderService.findById(idorder);
-    //         res.status(200).jsonp(orders)
-    //     } catch (e) {
-    //         res.status(500).json(e.message)
-    //     }
-    // }
+    findByIdOrder = async (req: Request, res: Response) => {
+        try {
+            let idOrder = req.params.idOrder;
+            let order = await orderService.findById(idOrder);
+            res.status(200).jsonp(order)
+        } catch (e) {
+            res.status(500).json(e.message)
+        }
+    }
     editOrder = async (req: Request, res: Response)=> {
         try {
             let idOrder = req.params.idOrder;
-            let neworder = req.body;
+            let newOrder = req.body;
             let idUser = req["decoded"].idUser;
             let check = await this.orderService.checkUser(idUser, idOrder);
             if(check) {
-                let orders = await this.orderService.updateorder(idOrder,neworder);
-                res.status(200).json(orders)
+                let order = await this.orderService.updateOrder(idOrder,newOrder);
+                res.status(200).json(order)
             }
             else {
                 res.status(401).json('invalid');
@@ -52,6 +52,17 @@ class OrderController{
             res.status(500).json(e.message)
         }
      }
+
+     deleteOrder = async (req: Request, res: Response)=> {
+        try {
+            let idOrder = req.params.id;
+            let orderDetails = await orderService.removeOrder(idOrder);
+                res.status(200).json(orderDetails)
+
+        } catch (e) {
+            res.status(500).json(e.message)
+        }
+    }
      showOrderByIdUser = async (req: Request, res: Response)=> {
          try {
              let orders = await this.orderService.findorderByIdUser(req.params.idUser)

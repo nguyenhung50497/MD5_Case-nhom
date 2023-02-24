@@ -27,20 +27,21 @@ class OrderDetailService{
     }
     
     save = async (orderDetail)=> {
-        let orderDetails = await this.orderDetailRepository.findOneBy({idHome: orderDetail.idHome});
-        if (!orderDetails) {
-            await this.orderDetailRepository.save(orderDetail);
-            return true;
+        return await this.orderDetailRepository.save(orderDetail);
+    }
+    updateOrderDetail = async (id, newOrderDetail) => {
+        let order = await this.orderDetailRepository.findOneBy({idOrderDetail: id})
+        if (!order) {
+            return null
         }
-        return false;
+        return await this.orderDetailRepository.update({idOrderDetail: id}, newOrderDetail)
     }
     removeHomeOrder = async (idOrderDetail) => {
-        let orderDetails = await this.orderDetailRepository.findOneBy({idOrderDetail: idOrderDetail});
-        if (!orderDetails) {
+        let orderDetail = await this.orderDetailRepository.findOneBy({idOrderDetail: idOrderDetail});
+        if (!orderDetail) {
             return null
         }
         return this.orderDetailRepository.delete({idOrderDetail: idOrderDetail});
     }
-
 }
 export default new OrderDetailService();

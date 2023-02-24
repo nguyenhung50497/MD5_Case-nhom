@@ -23,29 +23,47 @@ class OrderDetailController {
 
     getOrderDetail = async (req: Request, res: Response)=>{
         try {
-            let orderDetails = await orderDetailService.getOrderDetail(req.params.idorderDetail);
+            let orderDetails = await orderDetailService.getOrderDetail(req.params.id);
             res.status(200).json(orderDetails)
         } catch (e) {
             res.status(500).json(e.message)
         }
     }
 
-    createOrderDetails = async (req: Request, res: Response) => {
+    createOrderDetail = async (req: Request, res: Response) => {
         try {
-            let orderDetails = await orderDetailService.save(req.body);
-            if (orderDetails) {
-                let countSongorder = await orderService.countHomeOrder(req.body.idorder);
+            let orderDetail = await orderDetailService.save(req.body);
+            if (orderDetail) {
+                let countOrderDetail = await orderService.countOrderDetail(req.body.idOrder);
             }
-            res.status(200).json(orderDetails)
+            res.status(200).json(orderDetail)
         } catch (e) {
             res.status(500).json(e.message)
         }
-
     }
+
+    editOrderDetail = async (req: Request, res: Response) => {
+        try {
+            let idOrder = +req.params.id;
+            let newOrderDetail = req.body;
+            let idUser = req["decoded"].idUser;
+            let check = await this.orderService.checkUser(idUser, idOrder);
+            if(check) {
+                let order = await this.orderDetailService.updateOrderDetail(idOrder,newOrderDetail);
+                res.status(200).json(order)
+            }
+            else {
+                res.status(401).json('invalid');
+            }
+        } catch (e) {
+            res.status(500).json(e.message)
+        }
+    }
+
     removeHomeFromOrder = async (req: Request, res: Response)=> {
         try {
-            let idorderDetail = req.params.id;
-            let orderDetails = await orderDetailService.removeHomeOrder(idorderDetail);
+            let idOrderDetail = req.params.id;
+            let orderDetails = await orderDetailService.removeHomeOrder(idOrderDetail);
                 res.status(200).json(orderDetails)
 
         } catch (e) {

@@ -6,7 +6,8 @@ import {userAuth} from "../middleware/user";
 export const orderRouter = Router();
 orderRouter.use(auth);
 orderRouter.get('',orderController.getAll);
-orderRouter.post('/', userAuth,orderController.createOrder);
-orderRouter.put('/:idOrder', userAuth,orderController.editOrder);
-// orderRouter.get('/:idorder',orderController.findByIdorder);
-orderRouter.get('/my-order/:idUser',orderController.showOrderByIdUser)
+orderRouter.post('/',orderController.createOrder);
+orderRouter.put('/:idOrder',orderController.editOrder);
+orderRouter.delete('/:idOrder',orderController.deleteOrder);
+orderRouter.get('/find-order/:idOrder',orderController.findByIdOrder);
+orderRouter.get('/my-order/:idUser',orderController.showOrderByIdUser);

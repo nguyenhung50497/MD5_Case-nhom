@@ -67,10 +67,8 @@ class HomeService {
     }
 
     checkUser = async (idUser, idHome) => {
-        let sql = `select u.idUser from home h join user u on h.idUser = u.idUser
-                   where idHome = ${idHome}`;
-        let checkIdUser = await this.homeRepository.query(sql);
-        if (checkIdUser[0].idUser === idUser) {
+        let checkIdUser = await this.homeRepository.findOneBy({idHome: idHome});
+        if (checkIdUser.idUser === idUser) {
             return true;
         }
         return false;

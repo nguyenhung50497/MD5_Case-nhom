@@ -32,26 +32,32 @@ class OrderService{
         }
         return await this.orderRepository.update({idOrder: idOrder}, newOrder)
     }
+    removeOrder= async (idOrder) => {
+        let order = await this.orderRepository.findOneBy({idOrder: idOrder});
+        if (!order) {
+            return null
+        }
+        return this.orderRepository.delete({idOrder: idOrder});
+    }
     findOrderByIdUser = async (idUser) => {
         let sql = `select * from order o join user u on o.idUser = u.idUser where u.idUser  = ${idUser}`
         let orders = this.orderRepository.query(sql)
         return orders
     }
     checkUser = async (idUser, idOrder) => {
-        let sql = `select * from order o join user u on o.idUser = u.idUser where idOrder = ${idOrder}`;
-        let checkIdUser = await this.orderRepository.query(sql);
-        if (checkIdUser[0].idUser === idUser) {
+        let checkIdUser = await this.orderRepository.findOneBy({idOrder: idOrder});
+        if (checkIdUser.idUser === idUser) {
             return true;
         }
         return false;
     }
 
-    countHomeOrder = async (idOrder) => {
+    countOrderDetail = async (idOrder) => {
         let order = await this.orderRepository.findOneBy({idOrder: idOrder})
         if (!order) {
             return null
         }
-        order.countHomeOrder = order.countHomeOrder + 1;
+        order.countOrderDetail = order.countOrderDetail + 1;
         return await this.orderRepository.update({idOrder: idOrder}, order);
     }
 
