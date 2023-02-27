@@ -13,7 +13,7 @@ homeRouter.get('/users',homeController.getAllHome);
 homeRouter.get('/my-homes',homeController.getMyHome)
 homeRouter.post('', userAuth,homeController.createHome)
 homeRouter.put('/:idHome', userAuth,homeController.editHome)
-homeRouter.delete('/:idHome', homeController.removeHome)
+homeRouter.delete('/:idHome', homeController.deleteHome)
 // homeRouter.get('/:idhome',homeController.findByIdhome)
 homeRouter.get('/rent-home/:idHome',homeController.countHome)
 homeRouter.get('/my-home/:idUser',homeController.findHomeByIdUser)

@@ -49,7 +49,7 @@ class HomeService {
         return this.homeRepository.update({idHome: idHome}, newHome)
         
     }
-    removeHome = async (idHome) => {
+    deleteHome = async (idHome) => {
         let homes = await this.homeRepository.findOneBy({idHome: idHome});
         if (!homes) {
             return null

@@ -60,10 +60,10 @@ class OrderDetailController {
         }
     }
 
-    removeHomeFromOrder = async (req: Request, res: Response)=> {
+    deleteOrderDetail = async (req: Request, res: Response)=> {
         try {
             let idOrderDetail = req.params.id;
-            let orderDetails = await orderDetailService.removeHomeOrder(idOrderDetail);
+            let orderDetails = await orderDetailService.deleteOrderDetail(idOrderDetail);
                 res.status(200).json(orderDetails)
 
         } catch (e) {

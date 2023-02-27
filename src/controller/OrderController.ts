@@ -56,7 +56,7 @@ class OrderController{
      deleteOrder = async (req: Request, res: Response)=> {
         try {
             let idOrder = req.params.id;
-            let orderDetails = await orderService.removeOrder(idOrder);
+            let orderDetails = await orderService.deleteOrder(idOrder);
                 res.status(200).json(orderDetails)
 
         } catch (e) {

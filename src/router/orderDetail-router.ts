@@ -8,5 +8,5 @@ orderDetailRouter.get('/',orderDetailController.getAll);
 orderDetailRouter.get('/my-order-detail/:idOrderDetail',orderDetailController.getOrderDetail);
 orderDetailRouter.post('/',orderDetailController.createOrderDetail)
 orderDetailRouter.put('/:id',orderDetailController.editOrderDetail)
-orderDetailRouter.delete('/:id',orderDetailController.removeHomeFromOrder)
+orderDetailRouter.delete('/:id',orderDetailController.deleteOrderDetail)
 

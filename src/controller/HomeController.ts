@@ -82,10 +82,12 @@ class homeController {
         }
         let homes = await homeService.getAllHome(limit, offset);
         let totalPage = await homeService.countHomes(limit);
+        let images = await imageService.findImageByIdHome(req.params.idHome);
         return res.status(201).json({
             homes: homes,
             currentPage: page,
-            totalPage: totalPage
+            totalPage: totalPage,
+            images: images
         });
     }
 
@@ -128,13 +130,13 @@ class homeController {
         }
 
     }
-    removeHome = async (req: Request, res: Response) => {
+    deleteHome = async (req: Request, res: Response) => {
         try {
             let idHome = req.params.idHome;
             let idUser = req["decoded"].idUser;
             let check = await this.homeService.checkUser(idUser, idHome);
             if (check || (req["decoded"].role === 'admin')) {
-                let homes = await this.homeService.removeHome(idHome);
+                let homes = await this.homeService.deleteHome(idHome);
                 res.status(200).json(homes);
             }
             else {

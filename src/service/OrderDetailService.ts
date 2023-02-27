@@ -36,7 +36,7 @@ class OrderDetailService{
         }
         return await this.orderDetailRepository.update({idOrderDetail: id}, newOrderDetail)
     }
-    removeHomeOrder = async (idOrderDetail) => {
+    deleteOrderDetail = async (idOrderDetail) => {
         let orderDetail = await this.orderDetailRepository.findOneBy({idOrderDetail: idOrderDetail});
         if (!orderDetail) {
             return null

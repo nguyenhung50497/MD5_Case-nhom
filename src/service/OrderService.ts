@@ -32,7 +32,7 @@ class OrderService{
         }
         return await this.orderRepository.update({idOrder: idOrder}, newOrder)
     }
-    removeOrder= async (idOrder) => {
+    deleteOrder= async (idOrder) => {
         let order = await this.orderRepository.findOneBy({idOrder: idOrder});
         if (!order) {
             return null
