@@ -185,24 +185,23 @@ class homeController {
     }
   };
 
-  // findhomeByName = async (req: Request,res: Response) => {
-  //     try {
-  //         let orders;
-  //         let data;
-  //         let name = req.query.name
-  //         let homes = await this.homeService.findhomeByName(name)
-  //         let categories = await categoryService.getAllCategory();
-  //         if (req["decoded"]) {
-  //             // orders = await orderService.getMyorder(req["decoded"].idUser);
-  //             data = [homes, categories, orders];
-  //         } else {
-  //             data = [homes, categories];
-  //         }
-  //         res.status(200).json(data)
-  //     } catch (err) {
-  //         res.status(500).json(err.message)
-  //     }
-  // }
+  findHomeByAddress = async (req: Request,res: Response) => {
+    let limit = 4;
+    let offset = 0;
+    let page = 1;
+    if (req.query.page) {
+      page = +req.query.page;
+      offset = (+page - 1) * limit;
+    }
+    let address = req.query.address;
+    
+    let homes = await homeService.findHomeByAddress(address, limit, offset);
+    return res.status(201).json({
+      homes: homes[0],
+      currentPage: page,
+      totalPage: homes[1],
+    });
+  }
 
   // findhome = async (req: Request,res: Response) => {
   //     try {

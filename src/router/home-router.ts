@@ -9,7 +9,7 @@ homeRouter.get('/images/:idHome',homeController.getImagesByIdHome);
 // homeRouter.get('/find-home-by-name',homeController.findHome);
 homeRouter.use(auth)
 homeRouter.get('/users',homeController.getAllHome);
-// homeRouter.get('/find-by-name',homeController.findHomeByName);
+homeRouter.get('/find-by-address',homeController.findHomeByAddress);
 homeRouter.get('/my-homes',homeController.getMyHome)
 homeRouter.post('', userAuth,homeController.createHome)
 homeRouter.put('/:idHome', userAuth,homeController.editHome)
