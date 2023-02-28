@@ -194,7 +194,6 @@ class homeController {
       offset = (+page - 1) * limit;
     }
     let address = req.query.address;
-    
     let homes = await homeService.findHomeByAddress(address, limit, offset);
     return res.status(201).json({
       homes: homes[0],
