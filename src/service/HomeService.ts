@@ -55,15 +55,13 @@ class HomeService {
     }
     return this.homeRepository.delete({ idHome: idHome });
   };
-  findHomeByAddress = async (value, limit, offset) => {
-    let sql = `select * from home h join category c on h.idCategory = c.idCategory where h.address like '%${value}%' limit '%${limit}%'  OFFSET ${offset}`;
-    let homes = await this.homeRepository.query(sql);
-    sql = `select count(*) c from home h join category c on h.idCategory = c.idCategory where h.address like '%${value}%'`
-    let count = await this.homeRepository.query(sql);
+  findHomeByAddress = async (value) => {
+    let sql = `select * from home h join category c on h.idCategory = c.idCategory where h.address like '%${value}%'`;
+    let homes = await this.homeRepository.query(sql)
     if (!homes) {
       return null;
     }
-    return [homes, count];
+    return homes;
   };
 
   checkUser = async (idUser, idHome) => {
