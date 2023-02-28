@@ -28,14 +28,12 @@ class HomeService {
   };
 
   getMyHome = async (idUser) => {
-    let sql = `select * from home h join category c on h.idCategory = c.idCategory join image i on h.idHome = i.idHome join user u on h.idUser = u.idUser where u.idUser = ${idUser}`;
+    let sql = `select * from home h join category c on h.idCategory = c.idCategory join user u on h.idUser = u.idUser where u.idUser = ${idUser}`;
     let homes = await this.homeRepository.query(sql);
     return homes;
   };
 
   save = async (home) => {
-    console.log(home);
-
     return this.homeRepository.save(home);
   };
   findById = async (idHome) => {
@@ -57,13 +55,15 @@ class HomeService {
     }
     return this.homeRepository.delete({ idHome: idHome });
   };
-  findHomeByAddress = async (value) => {
-    let sql = `select * from home h join category c on h.idCategory = c.idCategory join image i on h.idHome = i.idHome where h.address like '%${value}%'`;
+  findHomeByAddress = async (value, limit, offset) => {
+    let sql = `select * from home h join category c on h.idCategory = c.idCategory where h.address like '%${value}%' limit '%${limit}%'  OFFSET ${offset}`;
     let homes = await this.homeRepository.query(sql);
+    sql = `select count(*) c from home h join category c on h.idCategory = c.idCategory where h.address like '%${value}%'`
+    let count = await this.homeRepository.query(sql);
     if (!homes) {
       return null;
     }
-    return homes;
+    return [homes, count];
   };
 
   checkUser = async (idUser, idHome) => {
