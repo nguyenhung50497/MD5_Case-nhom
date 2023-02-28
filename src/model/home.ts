@@ -15,7 +15,7 @@ export class Home {
   price: number;
   @Column()
   idCategory: number;
-  @Column()
+  @Column({ type: "text" })
   image: string;
   @Column({ default: 0 })
   count: number;
