@@ -72,7 +72,7 @@ class homeController {
   };
 
   index = async (req: Request, res: Response) => {
-    let limit = 4;
+    let limit = 6;
     let offset = 0;
     let page = 1;
     if (req.query.page) {
