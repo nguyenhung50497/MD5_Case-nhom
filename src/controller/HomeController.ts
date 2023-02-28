@@ -185,7 +185,7 @@ class homeController {
     }
   };
 
-  findHomeByAddress = async (req: Request,res: Response) => {
+  findHomeByAddress = async (req: Request, res: Response) => {
     let limit = 4;
     let offset = 0;
     let page = 1;
@@ -194,14 +194,14 @@ class homeController {
       offset = (+page - 1) * limit;
     }
     let address = req.query.address;
-    
+
     let homes = await homeService.findHomeByAddress(address, limit, offset);
     return res.status(201).json({
       homes: homes[0],
       currentPage: page,
       totalPage: homes[1],
     });
-  }
+  };
 
   // findhome = async (req: Request,res: Response) => {
   //     try {

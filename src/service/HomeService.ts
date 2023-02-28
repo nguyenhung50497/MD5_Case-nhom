@@ -58,7 +58,7 @@ class HomeService {
   findHomeByAddress = async (value, limit, offset) => {
     let sql = `select * from home h join category c on h.idCategory = c.idCategory where h.address like '%${value}%' limit '%${limit}%'  OFFSET ${offset}`;
     let homes = await this.homeRepository.query(sql);
-    sql = `select count(*) c from home h join category c on h.idCategory = c.idCategory where h.address like '%${value}%'`
+    sql = `select count(*) c from home h join category c on h.idCategory = c.idCategory where h.address like '%${value}%'`;
     let count = await this.homeRepository.query(sql);
     if (!homes) {
       return null;
