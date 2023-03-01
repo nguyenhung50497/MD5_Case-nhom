@@ -1,10 +1,10 @@
 import {AppDataSource} from "../data-source";
-import {Order} from "../model/order";
+import {Order1} from "../model/order";
 
 class OrderService{
     private orderRepository
     constructor() {
-        this.orderRepository = AppDataSource.getRepository(Order)
+        this.orderRepository = AppDataSource.getRepository(Order1)
     }
     getAllOrder = async ()=> {
         let sql = `select * from order o join user u on o.idUser = u.idUser`;

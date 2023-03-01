@@ -23,7 +23,7 @@ class OrderDetailController {
 
     getOrderDetail = async (req: Request, res: Response)=>{
         try {
-            let orderDetails = await orderDetailService.getOrderDetail(req.params.id);
+            let orderDetails = await orderDetailService.getOrderDetail(req.params.idUser);
             res.status(200).json(orderDetails)
         } catch (e) {
             res.status(500).json(e.message)
