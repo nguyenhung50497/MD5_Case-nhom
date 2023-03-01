@@ -33,9 +33,6 @@ class OrderDetailController {
     createOrderDetail = async (req: Request, res: Response) => {
         try {
             let orderDetail = await orderDetailService.save(req.body);
-            if (orderDetail) {
-                let countOrderDetail = await orderService.countOrderDetail(req.body.idOrder);
-            }
             res.status(200).json(orderDetail)
         } catch (e) {
             res.status(500).json(e.message)

@@ -72,20 +72,24 @@ class homeController {
   };
 
   index = async (req: Request, res: Response) => {
-    let limit = 6;
-    let offset = 0;
-    let page = 1;
-    if (req.query.page) {
-      page = +req.query.page;
-      offset = (+page - 1) * limit;
+    try {
+      let limit = 6;
+      let offset = 0;
+      let page = 1;
+      if (req.query.page) {
+        page = +req.query.page;
+        offset = (+page - 1) * limit;
+      }
+      let homes = await homeService.getAllHome(limit, offset);
+      let totalPage = await homeService.countHomes(limit);
+      return res.status(201).json({
+        homes: homes,
+        currentPage: page,
+        totalPage: totalPage,
+      });
+    } catch (err) {
+      res.status(500).json(err.message);
     }
-    let homes = await homeService.getAllHome(limit, offset);
-    let totalPage = await homeService.countHomes(limit);
-    return res.status(201).json({
-      homes: homes,
-      currentPage: page,
-      totalPage: totalPage,
-    });
   };
 
   getMyHome = async (req: Request, res: Response) => {
@@ -157,15 +161,6 @@ class homeController {
       res.status(500).json(e.message);
     }
   };
-  // searchNamehome = async (req: Request,res: Response) => {
-  //     try{
-  //         let homes = await this.homeService.findByNamehome(req.query.namehome)
-  //         res.status(200).json(homes)
-  //     }catch (e){
-  //         res.status(500).json(e.message)
-  //     }
-
-  // }
 
   findHomeByIdUser = async (req: Request, res: Response) => {
     try {
@@ -187,24 +182,26 @@ class homeController {
   };
 
   findHomeByAddress = async (req: Request,res: Response) => {
-    let address = req.query.address;
-    let homes = await homeService.findHomeByAddress(address);
-    return res.status(201).json({
-      homes: homes
-    });
+    try {
+      let limit = 6;
+      let offset = 0;
+      let page = 1;
+      if (req.query.page) {
+        page = +req.query.page;
+        offset = (+page - 1) * limit;
+      }
+      let address = req.query.address;
+      let homes = await homeService.findHomeByAddress(address, limit, offset);
+      return res.status(201).json({
+        homes: homes.homes,
+        currentPage: page,
+        totalPage: homes.totalPage,
+        address: address
+      });
+    } catch (err) {
+      res.status(500).json(err.message);
+    }
   }
-
-  // findhome = async (req: Request,res: Response) => {
-  //     try {
-  //         let name = req.query.name
-  //         let homes = await this.homeService.findhomeByName(name)
-  //         let categories = await categoryService.getAllCategory();
-  //         let data = [homes, categories];
-  //         res.status(200).json(data)
-  //     } catch (err) {
-  //         res.status(500).json(err.message)
-  //     }
-  // }
 }
 
 export default new homeController();

@@ -92,7 +92,6 @@ class UserServices {
                 const token = jwt.sign(payload, SECRET, {
                     expiresIn: 36000000
                 });
-                console.log(1, payload)
                 let userRes = {
                     idUser: userCheck.idUser,
                     username: userCheck.username,

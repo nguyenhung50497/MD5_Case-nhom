@@ -1,11 +1,14 @@
 import {Request, Response} from "express";
-import UserServices from "../service/UserService";
+import UserService from "../service/UserService";
+import OrderService from "../service/OrderService";
 
 class UserController {
     private userServices;
+    private orderServices;
 
     constructor() {
-        this.userServices = UserServices;
+        this.userServices = UserService;
+        this.orderServices = OrderService;
     }
 
     getAllUser = async (req: Request, res: Response) => {
@@ -70,6 +73,7 @@ class UserController {
     register = async (req: Request, res: Response) => {
         try {
             let user = await this.userServices.register(req.body);
+            let order = await this.orderServices.save({idUser: user.idUser})
             res.status(201).json(user)
         } catch (e) {
             res.status(500).json(e.message)
@@ -78,7 +82,12 @@ class UserController {
     login = async (req: Request, res: Response) => {
         try {
             let response = await this.userServices.checkUser(req.body)
-            res.status(200).json(response)
+            console.log(response.idUser);
+            if (response=== "User not found" || response=== "Wrong password") {
+                res.status(200).json(response)
+            }
+            let order = await this.orderServices.findOrderByIdUser(response.idUser)
+            res.status(200).json({...response, idOrder: order.idOrder})
         } catch (e) {
             res.status(500).json(e.message)
         }
