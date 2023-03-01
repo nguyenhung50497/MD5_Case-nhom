@@ -76,7 +76,6 @@ class UserServices {
     }
 
     checkUser = async (user) => {
-        console.log(0, user)
         let userCheck = await this.userRepository.findOneBy({username: user.username});
         if (!userCheck) {
             return "User not found";
@@ -90,11 +89,10 @@ class UserServices {
                     username: userCheck.username,
                     role: userCheck.role
                 }
-
                 const token = jwt.sign(payload, SECRET, {
                     expiresIn: 36000000
                 });
-
+                console.log(1, payload)
                 let userRes = {
                     idUser: userCheck.idUser,
                     username: userCheck.username,

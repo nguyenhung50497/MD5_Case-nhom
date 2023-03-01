@@ -7,6 +7,4 @@ export class Order {
     idOrder: number;
     @Column()
     idUser: number;
-    @Column({default: 0})
-    countOrderDetail: number;
 }

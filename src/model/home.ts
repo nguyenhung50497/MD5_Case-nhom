@@ -14,6 +14,12 @@ export class Home {
   @Column()
   price: number;
   @Column()
+  floorArea: number;
+  @Column()
+  bedrooms: number;
+  @Column()
+  bathrooms: number;
+  @Column()
   idCategory: number;
   @Column({ type: "text" })
   image: string;
@@ -21,4 +27,6 @@ export class Home {
   count: number;
   @Column()
   idUser: number;
+  @Column({default: "For rent"})
+  status: string;
 }

@@ -11,5 +11,6 @@ export class OrderDetail {
     idOrder: number;
     @Column()
     timeRent: string;
-
+    @Column({default: "Check in"})
+    statusOrder: string;
 }

@@ -1,5 +1,6 @@
 export const userAuth = (req, res, next) => {
-  req.decoded.role
+  console.log(4, req.decoded);
+  
   if (req.decoded.role === "user") {
     next();
   } else {
