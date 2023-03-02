@@ -98,6 +98,18 @@ class HomeService {
     let totalPage = Math.ceil(+homes[0].c / limit);
     return totalPage;
   };
+  changeStatusHome = async (idHome)=> {
+    let home = await this.homeRepository.findOneBy({ idHome: idHome });
+    if (!home) {
+      return null
+    }
+    if (home.status === 'Rented'){
+      home.status = 'For rent';
+    } else {
+      home.status = 'Rented'
+    }
+    return await this.homeRepository.update({idHome: idHome}, home)
+  }
 }
 
 export default new HomeService();
