@@ -82,7 +82,7 @@ class homeController {
       }
       let homes = await homeService.getAllHome(limit, offset);
       let totalPage = await homeService.countHomes(limit);
-      return res.status(201).json({
+      res.status(201).json({
         homes: homes,
         currentPage: page,
         totalPage: totalPage,
@@ -94,11 +94,19 @@ class homeController {
 
   getMyHome = async (req: Request, res: Response) => {
     try {
-      let homes = await homeService.getMyHome(req["decoded"].idUser);
-      let categories = await categoryService.getAllCategory();
-      // let playlists = await homeService.getMyPlaylist(req["decoded"].idUser);
-      let data = [homes, categories];
-      res.status(200).json(data);
+      let limit = 6;
+      let offset = 0;
+      let page = 1;
+      if (req.query.page) {
+        page = +req.query.page;
+        offset = (+page - 1) * limit;
+      }
+      let homes = await homeService.getMyHome(req["decoded"].idUser, limit, offset);
+      res.status(201).json({
+        homes: homes.homes,
+        currentPage: page,
+        totalPage: homes.totalPage,
+      });
     } catch (e) {
       res.status(500).json(e.message);
     }

@@ -27,10 +27,16 @@ class HomeService {
     return homes;
   };
 
-  getMyHome = async (idUser) => {
-    let sql = `select * from home h join category c on h.idCategory = c.idCategory join user u on h.idUser = u.idUser where u.idUser = ${idUser}`;
+  getMyHome = async (idUser, limit, offset) => {
+    let sql = `select * from home h join category c on h.idCategory = c.idCategory join user u on h.idUser = u.idUser where u.idUser = ${idUser} LIMIT ${limit} OFFSET ${offset}`;
     let homes = await this.homeRepository.query(sql);
-    return homes;
+    sql = `select count(*) c from home h join category c on h.idCategory = c.idCategory join user u on h.idUser = u.idUser where u.idUser = ${idUser}`;
+    let counts = await this.homeRepository.query(sql);
+    let totalPage = Math.ceil(+counts[0].c / limit)
+    if (!homes) {
+      return null;
+    }
+    return {homes: homes, totalPage: totalPage};
   };
 
   save = async (home) => {
