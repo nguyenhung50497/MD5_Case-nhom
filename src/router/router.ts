@@ -8,11 +8,11 @@ import {adminRouter} from "./admin-router";
 import {orderRouter} from "./order-router";
 import {orderDetailRouter} from "./orderDetail-router";
 export  const router = Router()
-router.use('/homes',homeRouter);
-router.use('/orders',orderRouter);
-router.use('/orderDetails',orderDetailRouter);
-router.use('/users',userRouter);
-router.use('/admins',adminRouter);
+router.use('/api/homes',homeRouter);
+router.use('/api/orders',orderRouter);
+router.use('/api/orderDetails',orderDetailRouter);
+router.use('/api/users',userRouter);
+router.use('/api/admins',adminRouter);
 // router.use('/albums',albumRouter);
-router.use('/categories',categoryRouter);
+router.use('/api/categories',categoryRouter);
 // router.get('/find-by-name', songController.searchNameSong);
