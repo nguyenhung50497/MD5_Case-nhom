@@ -33,6 +33,14 @@ class OrderDetailService{
         let orderDetails = await this.orderDetailRepository.query(sql);
         return orderDetails
     }
+
+    getOrderDetailByHome = async (id) => {
+        let sql = `select * from order_detail od 
+                            join order1 o on od.idOrder = o.idOrder
+                            join user u on o.idUser = u.idUser where od.idHome = ${id};`
+        let orderDetails = await this.orderDetailRepository.query(sql);
+        return orderDetails
+    }
     
     save = async (orderDetail)=> {
         return await this.orderDetailRepository.save(orderDetail);
@@ -61,6 +69,14 @@ class OrderDetailService{
             return true;
         }
         return false;
+    }
+    changeStatusOrder = async (idOrderDetail) => {
+        let orderDetail = await this.orderDetailRepository.findOneBy({idOrderDetail: idOrderDetail})
+        if (!orderDetail) {
+            return null
+        }
+        orderDetail.statusOrder = 'Check Out';
+        return await this.orderDetailRepository.update({idOrderDetail: idOrderDetail}, orderDetail)
     }
 }
 export default new OrderDetailService();

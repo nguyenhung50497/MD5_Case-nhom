@@ -42,6 +42,15 @@ class OrderDetailController {
         }
     }
 
+    getOrderDetailByHome = async (req: Request, res: Response)=>{
+        try {
+            let orderDetails = await orderDetailService.getOrderDetailByHome(req.params.id);
+            res.status(200).json(orderDetails)
+        } catch (e) {
+            res.status(500).json(e.message)
+        }
+    }
+
     createOrderDetail = async (req: Request, res: Response) => {
         try {
             let time = new Date().toLocaleDateString();
@@ -78,9 +87,20 @@ class OrderDetailController {
             let newOrderDetail = req.body;
             let idUser = req["decoded"].idUser;
             let check = await this.orderDetailService.checkUser(idUser, idOrderDetail);
+            console.log(newOrderDetail);
+            let checkIn = newOrderDetail.checkIn.split('-');
+            let checkOut = newOrderDetail.checkOut.split('-');
             if(check) {
-                let order = await this.orderDetailService.updateOrderDetail(idOrderDetail,newOrderDetail);
-                res.status(200).json(order)
+                if (+checkIn[0] > +checkOut[0]) {
+                    res.status(200).json('Wrong Check Out')
+                } else if(+checkIn[0] === +checkOut[0] && +checkIn[1] > +checkOut[1]) {
+                    res.status(200).json('Wrong Check Out')
+                } else if(+checkIn[0] === +checkOut[0] && +checkIn[1] === +checkOut[1] && +checkIn[2] >= +checkOut[2]) {
+                    res.status(200).json('Wrong Check Out')
+                } else {
+                    let order = await this.orderDetailService.updateOrderDetail(idOrderDetail,newOrderDetail);
+                    res.status(200).json(order)
+                }
             }
             else {
                 res.status(401).json('invalid');
@@ -99,6 +119,7 @@ class OrderDetailController {
                 res.status(200).json(`Wrong`);
             } else {
                 await orderDetailService.cancelOrderDetail(req.params.id);
+                let home = await homeService.changeStatusHome(req.body.idHome);
                 res.status(200).json(`Success`)
             }
         } catch (e) {
@@ -108,17 +129,17 @@ class OrderDetailController {
 
     checkOut = async (req: Request, res: Response)=> {
         try {
-            let orderDetails = await orderDetailService.getOrderDetailById(req.params.id);
-            let checkIn = orderDetails[0].checkIn.split('-');
-            let checkOut = orderDetails[0].checkOut.split('-');
-            if (+checkIn[0] === +checkOut[0] && +checkIn[1] === +checkOut[1]) {
-                let invoice = orderDetails[0].price * (+checkOut[2] - +checkIn[2])
-                res.status(200).json(invoice)
-            } else if (+checkIn[0] === +checkOut[0] && +checkOut[2] > +checkIn[2]) {
-                let days = (+checkOut[1] - +checkIn[1])*30 + (+checkOut[2] - +checkIn[2]);
-                let invoice = orderDetails[0].price * days;
-                res.status(200).json(invoice)
-            }
+            let orderDetails = await orderDetailService.changeStatusOrder(req.params.id);
+            let home = await homeService.changeStatusHome(req.body.idHome);
+            // if (+checkIn[0] === +checkOut[0] && +checkIn[1] === +checkOut[1]) {
+            //     let invoice = orderDetails[0].price * (+checkOut[2] - +checkIn[2])
+            //     res.status(200).json(invoice)
+            // } else if (+checkIn[0] === +checkOut[0] && +checkOut[2] > +checkIn[2]) {
+            //     let days = (+checkOut[1] - +checkIn[1])*30 + (+checkOut[2] - +checkIn[2]);
+            //     let invoice = orderDetails[0].price * days;
+            //     res.status(200).json(invoice)
+            // }
+            res.status(200).json('Success')
         } catch (e) {
             res.status(500).json(e.message)
         }
