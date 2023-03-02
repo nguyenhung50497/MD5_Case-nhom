@@ -10,6 +10,9 @@ export class OrderDetail {
     @Column()
     idOrder: number;
     @Column()
-    timeRent: string;
-
+    checkIn: string;
+    @Column()
+    checkOut: string;
+    @Column({default: "Check in"})
+    statusOrder: string;
 }

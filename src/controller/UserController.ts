@@ -1,11 +1,14 @@
 import {Request, Response} from "express";
-import UserServices from "../service/UserService";
+import UserService from "../service/UserService";
+import OrderService from "../service/OrderService";
 
 class UserController {
     private userServices;
+    private orderServices;
 
     constructor() {
-        this.userServices = UserServices;
+        this.userServices = UserService;
+        this.orderServices = OrderService;
     }
 
     getAllUser = async (req: Request, res: Response) => {
@@ -46,8 +49,22 @@ class UserController {
 
     changePassword = async (req: Request, res: Response) => {
         try {
-            let response = await this.userServices.changePassword(req.params.idUser, req.body.password);
-            res.status(200).json(response);
+            let checkOldPassword = await this.userServices.checkOldPassword(req.params.idUser, req.body.oldPassword)
+            let checkNewPassword = await this.userServices.checkNewPassword(req.params.idUser, req.body.newPassword)
+            if (checkOldPassword === "User not found") {
+                res.status(200).json("User not found");
+            } else if (!checkOldPassword) {
+                res.status(200).json("Old password does not match");
+            } else {
+                if (checkNewPassword === "User not found") {
+                    res.status(200).json("User not found");
+                } else if (checkNewPassword) {
+                    res.status(200).json("New password is match with old password");
+                } else {
+                    await this.userServices.changePassword(req.params.idUser, req.body.newPassword)
+                    res.status(200).json("Success")
+                }
+            }
         } catch (e) {
             res.status(500).json(e.message)
         }
@@ -56,6 +73,7 @@ class UserController {
     register = async (req: Request, res: Response) => {
         try {
             let user = await this.userServices.register(req.body);
+            let order = await this.orderServices.save({idUser: user.idUser})
             res.status(201).json(user)
         } catch (e) {
             res.status(500).json(e.message)
@@ -64,7 +82,12 @@ class UserController {
     login = async (req: Request, res: Response) => {
         try {
             let response = await this.userServices.checkUser(req.body)
-            res.status(200).json(response)
+            console.log(response.idUser);
+            if (response=== "User not found" || response=== "Wrong password") {
+                res.status(200).json(response)
+            }
+            let order = await this.orderServices.findOrderByIdUser(response.idUser)
+            res.status(200).json({...response, idOrder: order.idOrder})
         } catch (e) {
             res.status(500).json(e.message)
         }

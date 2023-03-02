@@ -14,6 +14,6 @@ homeRouter.get("/my-homes", homeController.getMyHome);
 homeRouter.post("", userAuth, homeController.createHome);
 homeRouter.put("/:idHome", userAuth, homeController.editHome);
 homeRouter.delete("/:idHome", homeController.deleteHome);
-homeRouter.get("/find-by-id/:idHome", homeController.findByIdHome);
+homeRouter.get("/find-by-id/:idHome", userAuth, homeController.findByIdHome);
 homeRouter.get("/rent-home/:idHome", homeController.countHome);
 homeRouter.get("/my-home/:idUser", homeController.findHomeByIdUser);

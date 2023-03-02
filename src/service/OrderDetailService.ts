@@ -16,12 +16,11 @@ class OrderDetailService{
         return orderDetails
     }
 
-    getOrderDetail = async (idOrder) => {
+    getOrderDetail = async (idUser) => {
         let sql = `select * from home
                             join category c on 	home.idCategory = c.idCategory 
                             join order_detail od on home.idHome = od.idHome
-                            join order o on od.idOrder = o.idOrder
-                            join user u on o.idUser = u.idUser where o.idOrder = ${idOrder};`
+                            join order1 o on od.idOrder = o.idOrder where o.idUser = ${idUser};`
         let orderDetails = await this.orderDetailRepository.query(sql);
         return orderDetails
     }

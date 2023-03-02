@@ -1,10 +1,10 @@
 import {AppDataSource} from "../data-source";
-import {Order} from "../model/order";
+import {Order1} from "../model/order";
 
 class OrderService{
     private orderRepository
     constructor() {
-        this.orderRepository = AppDataSource.getRepository(Order)
+        this.orderRepository = AppDataSource.getRepository(Order1)
     }
     getAllOrder = async ()=> {
         let sql = `select * from order o join user u on o.idUser = u.idUser`;
@@ -40,8 +40,7 @@ class OrderService{
         return this.orderRepository.delete({idOrder: idOrder});
     }
     findOrderByIdUser = async (idUser) => {
-        let sql = `select * from order o join user u on o.idUser = u.idUser where u.idUser  = ${idUser}`
-        let orders = this.orderRepository.query(sql)
+        let orders = this.orderRepository.findOneBy({idUser: idUser});
         return orders
     }
     checkUser = async (idUser, idOrder) => {
@@ -50,15 +49,6 @@ class OrderService{
             return true;
         }
         return false;
-    }
-
-    countOrderDetail = async (idOrder) => {
-        let order = await this.orderRepository.findOneBy({idOrder: idOrder})
-        if (!order) {
-            return null
-        }
-        order.countOrderDetail = order.countOrderDetail + 1;
-        return await this.orderRepository.update({idOrder: idOrder}, order);
     }
 
 }

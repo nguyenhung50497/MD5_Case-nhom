@@ -24,10 +24,7 @@ class UserServices {
     }
 
     getMyProfile = async (idUser) => {
-        let sql = `select * 
-                   from  user where idUser = ${idUser}`
-        let users = await this.userRepository.query(sql);
-
+        let users = await this.userRepository.findOneBy({idUser: idUser});
         return users;
     }
 
@@ -92,11 +89,9 @@ class UserServices {
                     username: userCheck.username,
                     role: userCheck.role
                 }
-
                 const token = jwt.sign(payload, SECRET, {
                     expiresIn: 36000000
                 });
-
                 let userRes = {
                     idUser: userCheck.idUser,
                     username: userCheck.username,
@@ -116,7 +111,24 @@ class UserServices {
             return null
         }
         user.password = checkUser.password;
-        return await this.userRepository.update({idUser : id},user)
+        await this.userRepository.update({idUser : id},user)
+        checkUser = await this.userRepository.findOneBy({idUser : id})
+        let payload = {
+            idUser: checkUser.idUser,
+            username: checkUser.username,
+            role: checkUser.role
+        }
+        const token = jwt.sign(payload, SECRET, {
+            expiresIn: 36000000
+        });
+        let userRes = {
+            idUser: checkUser.idUser,
+            username: checkUser.username,
+            role: checkUser.role,
+            avatar: checkUser.avatar,
+            token : token
+        }
+        return userRes;
     }
 
     remove = async (id) => {
