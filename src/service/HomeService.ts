@@ -19,7 +19,7 @@ class HomeService {
   };
 
   getAllHome = async (limit, offset) => {
-    let sql = `select * from home h join category c on h.idCategory = c.idCategory LIMIT ${limit} OFFSET ${offset}`;
+    let sql = `select * from home h join user u on h.idUser = u.idUser join category c on h.idCategory = c.idCategory LIMIT ${limit} OFFSET ${offset}`;
     let homes = await this.homeRepository.query(sql);
     if (!homes) {
       return "No homes found";
