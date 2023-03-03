@@ -73,6 +73,30 @@ class HomeService {
     return {homes: homes, totalPage: totalPage};
   };
 
+  findHomeForRent = async (limit, offset) => {
+    let sql = `select * from home h join category c on h.idCategory = c.idCategory where h.status = 'For rent' LIMIT ${limit} OFFSET ${offset}`;
+    let homes = await this.homeRepository.query(sql);
+    sql = `select count(*) c from home h join category c on h.idCategory = c.idCategory where h.status = 'For rent'`;
+    let counts = await this.homeRepository.query(sql);
+    let totalPage = Math.ceil(+counts[0].c / limit)
+    if (!homes) {
+      return null;
+    }
+    return {homes: homes, totalPage: totalPage};
+  };
+
+  findHomeRented = async (limit, offset) => {
+    let sql = `select * from home h join category c on h.idCategory = c.idCategory where h.status = 'Rented' LIMIT ${limit} OFFSET ${offset}`;
+    let homes = await this.homeRepository.query(sql);
+    sql = `select count(*) c from home h join category c on h.idCategory = c.idCategory where h.status = 'Rented'`;
+    let counts = await this.homeRepository.query(sql);
+    let totalPage = Math.ceil(+counts[0].c / limit)
+    if (!homes) {
+      return null;
+    }
+    return {homes: homes, totalPage: totalPage};
+  };
+
   checkUser = async (idUser, idHome) => {
     let checkIdUser = await this.homeRepository.findOneBy({ idHome: idHome });
     if (checkIdUser.idUser === idUser) {

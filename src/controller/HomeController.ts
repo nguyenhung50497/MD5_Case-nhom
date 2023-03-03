@@ -209,6 +209,46 @@ class homeController {
       res.status(500).json(err.message);
     }
   }
+
+  findHomeForRent = async (req: Request,res: Response) => {
+    try {
+      let limit = 6;
+      let offset = 0;
+      let page = 1;
+      if (req.query.page) {
+        page = +req.query.page;
+        offset = (+page - 1) * limit;
+      }
+      let homes = await homeService.findHomeForRent(limit, offset);
+      return res.status(201).json({
+        homes: homes.homes,
+        currentPage: page,
+        totalPage: homes.totalPage
+      });
+    } catch (err) {
+      res.status(500).json(err.message);
+    }
+  }
+
+  findHomeRented = async (req: Request,res: Response) => {
+    try {
+      let limit = 6;
+      let offset = 0;
+      let page = 1;
+      if (req.query.page) {
+        page = +req.query.page;
+        offset = (+page - 1) * limit;
+      }
+      let homes = await homeService.findHomeRented(limit, offset);
+      return res.status(201).json({
+        homes: homes.homes,
+        currentPage: page,
+        totalPage: homes.totalPage
+      });
+    } catch (err) {
+      res.status(500).json(err.message);
+    }
+  }
 }
 
 export default new homeController();

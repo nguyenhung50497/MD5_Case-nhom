@@ -10,6 +10,8 @@ homeRouter.get("/images/:idHome", homeController.getImagesByIdHome);
 homeRouter.use(auth);
 homeRouter.get("/users", homeController.getAllHome);
 homeRouter.get('/find-by-address',homeController.findHomeByAddress);
+homeRouter.get('/for-rent',homeController.findHomeForRent);
+homeRouter.get('/rented',homeController.findHomeRented);
 homeRouter.get("/my-homes", homeController.getMyHome);
 homeRouter.post("", userAuth, homeController.createHome);
 homeRouter.put("/:idHome", userAuth, homeController.editHome);
