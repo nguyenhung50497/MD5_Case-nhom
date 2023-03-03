@@ -87,7 +87,6 @@ class OrderDetailController {
             let newOrderDetail = req.body;
             let idUser = req["decoded"].idUser;
             let check = await this.orderDetailService.checkUser(idUser, idOrderDetail);
-            console.log(newOrderDetail);
             let checkIn = newOrderDetail.checkIn.split('-');
             let checkOut = newOrderDetail.checkOut.split('-');
             if(check) {

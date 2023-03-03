@@ -82,7 +82,6 @@ class UserController {
     login = async (req: Request, res: Response) => {
         try {
             let response = await this.userServices.checkUser(req.body)
-            console.log(response.idUser);
             if (response=== "User not found" || response=== "Wrong password") {
                 res.status(200).json(response)
             }

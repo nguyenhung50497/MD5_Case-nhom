@@ -126,7 +126,6 @@ class homeController {
       let idHome = req.params.idHome;
       let idUser = req["decoded"].idUser;
       let check = await this.homeService.checkUser(idUser, idHome);
-      console.log(idUser, check);
       if (check) {
         let homes = await this.homeService.updateHome(idHome, req.body);
         res.status(200).json(homes);
