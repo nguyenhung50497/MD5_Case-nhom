@@ -84,9 +84,10 @@ class UserController {
             let response = await this.userServices.checkUser(req.body)
             if (response=== "User not found" || response=== "Wrong password") {
                 res.status(200).json(response)
+            } else {
+                let order = await this.orderServices.findOrderByIdUser(response.idUser)
+                res.status(200).json({...response, idOrder: order.idOrder})
             }
-            let order = await this.orderServices.findOrderByIdUser(response.idUser)
-            res.status(200).json({...response, idOrder: order.idOrder})
         } catch (e) {
             res.status(500).json(e.message)
         }
@@ -109,15 +110,6 @@ class UserController {
         } catch (e) {
             res.status(500).json(e.message)
         }
-    }
-    showSongCreate = async (req: Request, res: Response)=> {
-        try {
-        let id = req.params.idUser;
-        let user = await this.userServices.showSong(id);
-        res.status(200).json(user)
-    } catch (e) {
-        res.status(500).json(e.message)
-    }
     }
 }
 
