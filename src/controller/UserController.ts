@@ -14,7 +14,7 @@ class UserController {
     getAllUser = async (req: Request, res: Response) => {
         try {
             let response = await this.userServices.getAll();
-            res.status(200).json(response)
+            return res.status(200).json(response)
         } catch (e) {
             res.status(500).json(e.message)
         }
@@ -23,7 +23,7 @@ class UserController {
     showMyProfile = async (req: Request, res: Response) => {
         try {
             let response = await this.userServices.getMyProfile(req.params.idUser);
-            res.status(200).json(response)
+            return res.status(200).json(response)
         } catch (e) {
             res.status(500).json(e.message)
         }
@@ -32,7 +32,7 @@ class UserController {
     checkOldPassword = async (req: Request, res: Response) => {
         try {
             let response = await this.userServices.checkOldPassword(req.params.idUser, req.body.password);
-            res.status(200).json(response);
+            return res.status(200).json(response);
         } catch (e) {
             res.status(500).json(e.message)
         }
@@ -41,7 +41,7 @@ class UserController {
     checkNewPassword = async (req: Request, res: Response) => {
         try {
             let response = await this.userServices.checkNewPassword(req.params.idUser, req.body.password);
-            res.status(200).json(response);
+            return res.status(200).json(response);
         } catch (e) {
             res.status(500).json(e.message)
         }
@@ -52,17 +52,17 @@ class UserController {
             let checkOldPassword = await this.userServices.checkOldPassword(req.params.idUser, req.body.oldPassword)
             let checkNewPassword = await this.userServices.checkNewPassword(req.params.idUser, req.body.newPassword)
             if (checkOldPassword === "User not found") {
-                res.status(200).json("User not found");
+                return res.status(200).json("User not found");
             } else if (!checkOldPassword) {
-                res.status(200).json("Old password does not match");
+                return res.status(200).json("Old password does not match");
             } else {
                 if (checkNewPassword === "User not found") {
-                    res.status(200).json("User not found");
+                    return res.status(200).json("User not found");
                 } else if (checkNewPassword) {
-                    res.status(200).json("New password is match with old password");
+                    return res.status(200).json("New password is match with old password");
                 } else {
                     await this.userServices.changePassword(req.params.idUser, req.body.newPassword)
-                    res.status(200).json("Success")
+                    return res.status(200).json("Success")
                 }
             }
         } catch (e) {
@@ -74,7 +74,7 @@ class UserController {
         try {
             let user = await this.userServices.register(req.body);
             let order = await this.orderServices.save({idUser: user.idUser})
-            res.status(201).json(user)
+            return res.status(201).json(user)
         } catch (e) {
             res.status(500).json(e.message)
         }
@@ -83,10 +83,10 @@ class UserController {
         try {
             let response = await this.userServices.checkUser(req.body)
             if (response=== "User not found" || response=== "Wrong password") {
-                res.status(200).json(response)
+                return res.status(200).json(response)
             } else {
                 let order = await this.orderServices.findOrderByIdUser(response.idUser)
-                res.status(200).json({...response, idOrder: order.idOrder})
+                return res.status(200).json({...response, idOrder: order.idOrder})
             }
         } catch (e) {
             res.status(500).json(e.message)
@@ -96,7 +96,7 @@ class UserController {
     editUser = async (req: Request, res: Response) => {
         try {
             let user = await this.userServices.edit(req.params.idUser, req.body);
-            res.status(201).json(user)
+            return res.status(201).json(user)
         } catch (e) {
             res.status(500).json(e.message)
         }
@@ -106,7 +106,7 @@ class UserController {
         try {
             let id = req.params.idUser;
             let user = await this.userServices.remove(id);
-            res.status(200).json(user)
+            return res.status(200).json(user)
         } catch (e) {
             res.status(500).json(e.message)
         }
