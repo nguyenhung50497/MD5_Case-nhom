@@ -9,7 +9,7 @@ export class Home {
   nameHome: string;
   @Column()
   address: string;
-  @Column()
+  @Column({type: 'text'})
   description: string;
   @Column()
   price: number;
